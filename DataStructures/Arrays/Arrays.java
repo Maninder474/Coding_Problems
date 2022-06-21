@@ -61,6 +61,37 @@ public class Arrays {
         }
         return false;
     }
-    
+
+    // this function returns the kth smallest element using quick sort logic 
+    // modify the pivot funtion to get the kth largest as will by changing the less then equal to to greaterthen sign.
+    public static int kthSmallest(int[] arr, int l, int r, int k) 
+    { 
+        if(k>0 && k<= r-l+1){
+            int pos = pivot(arr,l,r);
+            if(pos - l == k-1)
+                return arr[pos];
+            if (pos - l > k - 1)
+                return kthSmallest(arr, l, pos - 1, k);
+ 
+            // Else recur for right subarray
+            return kthSmallest(arr, pos + 1, r, k - pos + l - 1);
+        }
+        return Integer.MAX_VALUE;
+    } 
+    public static int pivot(int[] arr, int l,int r ){
+        int x = arr[r],i = l,temp=0;
+        for(int j =l;j<r;j++){
+            if(arr[j]>x){
+                temp = arr[j];
+                arr[j]=arr[i];
+                arr[i]=temp;
+                i++;
+            }
+        }
+        temp = arr[r];
+        arr[r]=arr[i];
+        arr[i]=temp;
+        return i;
+    }
 
 }
