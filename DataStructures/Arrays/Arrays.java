@@ -1,5 +1,6 @@
 package DataStructures.Arrays;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -104,4 +105,60 @@ public class Arrays {
         arr[r] = temp;
         return partition(arr, l, r); 
     } 
+
+    // Below method finds the missing number in the arry of continous number.
+    public static int MissingNumber(int[] arr){
+        int n = arr.length;
+        int sum = n*(n-1)/2;
+        int sum1  =0;
+        for(int i : arr)
+            sum1 += i;
+        return sum1-sum;
+    }
+
+    //Below Method finds subarray with a given sum
+    public static ArrayList<Integer> subarraySum(int[] arr,int sum){
+        int n = arr.length;
+        int x = -1,y=-1,l_sum = 0;
+        ArrayList<Integer> al = new ArrayList<Integer>();
+        for(int i =0;i<n;i++)
+        {
+            x = i;
+            for(int j = i;j<n;j++){
+                l_sum = l_sum+arr[j];
+                if(l_sum == sum){
+                    y = j;
+                    break;
+                }else if (l_sum>sum){
+                    l_sum =0;
+                    break;
+                }
+            }
+            if(sum==l_sum){
+                for(int k = x;k<=y;k++){
+                   al.add( arr[k]);
+                }
+                break;
+            }
+        }
+        return null;
+    }
+
+    // Kadane's algorithm to find maximum continous sum. 
+    public static int maxSubarraySum(int arr[]){
+        int maxSoFar = arr[0];
+        int maxEndHere = arr[0];
+        int n = arr.length;
+        for(int i = 1 ;i<n ;i++){
+            maxEndHere = Max(arr[i],arr[i]+maxEndHere);
+            maxSoFar = Max(maxEndHere,maxSoFar);
+        }
+        return maxSoFar;
+    }
+    
+    public static int Max(int a,int b){
+        if(a>b)
+            return a;
+        return b;
+    }
 }
