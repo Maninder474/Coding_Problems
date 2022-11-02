@@ -161,4 +161,27 @@ public class Arrays {
             return a;
         return b;
     }
+
+    public static void sort012(int a[], int n)
+    {
+        int l = 0 , m = n-1 ,i=0;
+        while(i<=m && m>l){
+            if(a[i]==0){
+                swap(a,i,l);
+                l++;
+                i++;
+            }
+            else if(a[i]==2){
+                swap(a,i,m);
+                m--;
+            }else{
+                i++;
+            }
+        }
+    }
+    public static void swap(int a[],int i,int k){
+        int temp = a[i];
+        a[i] = a[k];
+        a[k] = temp;
+    }
 }
