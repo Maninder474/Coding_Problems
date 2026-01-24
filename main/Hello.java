@@ -1,7 +1,8 @@
 package main;
 
-import DataStructures.Arrays.Arrays;
-import DataStructures.Graphs.Graph;
+import DataStructures.Arrays.ArraysTest;
+import DataStructures.Strings.StringsTest;
+import DataStructures.util.time.Clock;
 
 /**
  * Hello
@@ -10,48 +11,26 @@ public class Hello {
 
     public static void main(String[] args) {
 
-        int arr[] = {1,2,3,4};
-       System.out.println( Arrays.kthSmallest(arr, 0, 3, 4));
-       // Graph g = new Graph(4);
-        // graph.addEdge(0, 1);
-        // graph.addEdge(0, 2);
-        // graph.addEdge(1, 3);
-        // graph.addEdge(4, 1);
-        // graph.addEdge(6, 4);
-        // graph.addEdge(5, 6);
-        // graph.addEdge(5, 2);
-        // graph.addEdge(6, 0);
+        Clock clock = new Clock();
 
-        // graph.addEdge(1, 0);
-        // graph.addEdge(0, 2);
-        // graph.addEdge(2, 1);
-        // graph.addEdge(0, 3);
-        // graph.addEdge(1, 4);
-        // //graph.BFS(2);
-        // long s,e;
-        // s = System.nanoTime();
-        // graph.DFS();
-        // e = System.nanoTime();
-        // System.out.println("time Escaped : "+(e-s));
-        // s = System.nanoTime();
-        // graph.DFSItr(0);
-        // e = System.nanoTime();
-        // System.out.println("time Escaped : "+(e-s));
-        // System.out.println(  "Mother vertex : "+graph.motherVertex());
+        System.out.println("Arrays Test Cases:");
+        ArraysTest.topKFrequent(clock);
+        ArraysTest.productExceptSelf(clock);
+        ArraysTest.productExceptSelfMedium(clock);
+        ArraysTest.kthSmallestInteger();
 
-    //     g.addEdge(0, 1);
-    //     g.addEdge(0, 2);
-    //     g.addEdge(1, 3);
-    //     g.addEdge(2, 3);
-    //     g.addEdge(1, 5);
-    //     g.addEdge(2, 5);
-    //     g.addEdge(2,6);
-    //     g.addEdge(6, 7);
+        System.out.println("\nStrings Test Cases:");
+         StringsTest.isPalindrome(clock);
+         StringsTest.reverseString(clock);
+         StringsTest.isValidParentheses(clock);
+         java.util.List<String> listStr = new java.util.ArrayList<String>();
+         listStr.add("Hello");
+         listStr.add("World");
+         listStr.add("This is a test string with special characters !@#$%^&*()");
+         StringsTest.encodeDecodeStrings(listStr, clock);
 
-    //    int res = g.connectedNodes(0, 3, 0);
-
-    //     System.out.println(res);
-    //     g.topologicalSort();
-    //    g.findLevelOfNode(0);
     }
+
+
+
 }

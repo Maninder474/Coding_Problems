@@ -1,6 +1,7 @@
 package DataStructures.Graphs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -40,7 +41,7 @@ public class Graph {
         }
     }
 
-    public void DFSUtil(int s,boolean visited[]){
+    public void DFSUtil(int s, boolean[] visited){
         visited[s] = true;
         System.out.println(s);
 
@@ -53,7 +54,7 @@ public class Graph {
         }
     }
 
-    public void DFSItr(int s,boolean visited[]){
+    public void DFSItr(int s, boolean[] visited){
 
         Stack<Integer> st = new Stack<Integer> ();
         st.push(s);
@@ -124,10 +125,8 @@ public class Graph {
         if(s==d)
             count++;
         else{
-            Iterator<Integer> ls = graph[s].listIterator();
-            while(ls.hasNext()){
-                s = ls.next();
-             count=   connectedNodes(s,d,count);
+            for (Integer integer : graph[s]) {
+                count = connectedNodes(integer, d, count);
             }
         }
         return count;
@@ -145,13 +144,11 @@ public class Graph {
                 
             if(n!=-1){
                 System.out.println(n+" -> "+level[n]);
-                Iterator<Integer> it = graph[n].listIterator();
-                while(it.hasNext()){
-                    int s = it.next();
-                    if(!visited[s]){
+                for (int s : graph[n]) {
+                    if (!visited[s]) {
                         q.add(s);
-                        visited[s]=true;
-                        level[s]=level[n]+1;
+                        visited[s] = true;
+                        level[s] = level[n] + 1;
                     }
                 }
             }
@@ -168,9 +165,8 @@ public class Graph {
             return false;
         }else{
             for(int i = 0;i<V;i++)
-                if(!visited[i])
-                    if(isCyclicUnDirectedUtil(graph,i,visited,-1))
-                        return true;
+                if(!visited[i] && isCyclicUnDirectedUtil(graph,i,visited,-1))
+                    return true;
             return false;
         }
     }
@@ -187,7 +183,7 @@ public class Graph {
         while(it.hasNext()){
             int n = it.next();
               if(isCyclicDirectedUtil(adj,n,visited,rec))
-                    return true;
+                  return true;
         }
         rec[i]=false;
         return false;
@@ -210,55 +206,44 @@ public class Graph {
 
     public void topologicalSort(){
         Stack<Integer> st = new Stack<Integer>();
-        boolean visited[] = new boolean[V];
+        boolean[] visited = new boolean[V];
         for(int i = 0;i<V;i++)
             if(!visited[i])
                 sort(i,st,visited);
-        while(!st.isEmpty()){
+        while(!st.isEmpty())
           System.out.println(st.pop()+" ");
-        }
     }
     public void sort(int i,Stack<Integer> st,boolean visited[]){
         
         visited[i]=true;
-        Iterator<Integer> it = graph[i].listIterator();
-        while(it.hasNext()){
-            int n = it.next();
-            if(!visited[n]){
-                sort(n,st,visited);
-            }
-        }
+        for (int n : graph[i])
+            if (!visited[n])
+                sort(n, st, visited);
         st.push(i);
     }
 
     public int spanningTree(int V,ArrayList<ArrayList<ArrayList<Integer>>> adj) 
     {
-        boolean mst[] = new boolean[V];
-        int key[] = new int[V];
-        for(int i = 0;i<V;i++)
-            key[i]=Integer.MAX_VALUE;
+        boolean[] mst = new boolean[V];
+        int[] key = new int[V];
+        Arrays.fill(key, Integer.MAX_VALUE);
         key[0]=0;
         for(int i = 0;i<V;i++){
             int u = minset(key,mst);
             mst[u]=true;
-            Iterator<ArrayList<Integer>> it = adj.get(u).listIterator();
-            while(it.hasNext()){
-                ArrayList<Integer> al = it.next();
-                if(!mst[al.get(0)] && key[al.get(0)]>al.get(1)){
+            for (ArrayList<Integer> al : adj.get(u))
+                if (!mst[al.get(0)] && key[al.get(0)] > al.get(1))
                     key[al.get(0)] = al.get(1);
-                }
-            }
         }
         int sum = 0;
-        for(int i = 0;i<key.length;i++)
-            sum+= key[i];
+        for (int j : key) sum += j;
         return sum;
     }
     private static int minset(int key[],boolean mst[]){
         int n = key.length;
         int min = Integer.MAX_VALUE,min_index=-1;
         for(int i =0;i<n;i++)
-            if(min>key[i] && mst[i]==false){
+            if(min>key[i] && !mst[i]){
                 min = key[i];
                 min_index = i;
             }
@@ -267,20 +252,16 @@ public class Graph {
 
     public int[] dijkstra(int V,ArrayList<ArrayList<ArrayList<Integer>>> adj, int S)
     {
-        boolean mst[] = new boolean[V];
-        int key[] = new int[V];
-        for(int i = 0;i<V;i++)
-            key[i]=Integer.MAX_VALUE;
+        boolean[] mst = new boolean[V];
+        int[] key = new int[V];
+        Arrays.fill(key, Integer.MAX_VALUE);
         key[S]=0;
         for(int i = 0;i<V;i++){
             int u = minset(key,mst);
             mst[u]=true;
-            Iterator<ArrayList<Integer>> it = adj.get(u).listIterator();
-            while(it.hasNext()){
-                ArrayList<Integer> al = it.next();
-                if(!mst[al.get(0)] && key[al.get(0)]>al.get(1)+key[u]){
-                    key[al.get(0)] =key[u]+ al.get(1);
-                }
+            for (ArrayList<Integer> al : adj.get(u)) {
+                if (!mst[al.get(0)] && key[al.get(0)] > al.get(1) + key[u])
+                    key[al.get(0)] = key[u] + al.get(1);
             }
         }
       return key;
