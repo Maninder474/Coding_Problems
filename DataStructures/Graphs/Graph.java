@@ -266,4 +266,115 @@ public class Graph {
         }
       return key;
     }
+
+
+    // Function to find the order of characters in the alien language
+    public String findOrder(String[] words) {
+        // code here
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        int[] inDegree = new int[26];
+        boolean[] visited = new boolean[26];
+        for(int i = 0;i<26;i++)
+            graph.add(new ArrayList<>());
+        for(String s : words)
+            for(char ch : s.toCharArray())
+                visited[ch-'a']=true;
+        for(int i = 0;i<words.length-1;i++){
+            String s1 = words[i];
+            String s2 = words[i+1];
+            int len = Math.min(s1.length(),s2.length());
+            int j =0;
+            while(j<len && s1.charAt(j)==s2.charAt(j)) j++;
+            if(j<len){
+                int u = s1.charAt(j)-'a';
+                int v = s2.charAt(j)-'a';
+                graph.get(u).add(v);
+                inDegree[v]++;
+            }else if(s1.length()>s2.length()) return "";
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0;i<26;i++)
+            if(inDegree[i]==0 && visited[i])
+                q.offer(i);
+
+        String res = "";
+        while(!q.isEmpty()){
+            int u = q.poll();
+            res+= (char)(u+'a');
+            for(int v : graph.get(u)){
+                inDegree[v]--;
+                if(inDegree[v]==0)
+                    q.offer(v);
+            }
+        }
+
+        for(int i =0;i<26;i++)
+            if(visited[i] && inDegree[i]!=0)
+                return "";
+        return res;
+    }
+
+    public int countIslands(char[][] grid) {
+
+        int count=0;
+        int n= grid.length;
+        int m = grid[0].length;
+        boolean [][]visited=new boolean[n][m];
+
+        for(int i =0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]=='L' && !visited[i][j]){
+                    dfs(grid,i,j,visited);
+                    count++;
+                }
+            }
+        }
+        return count;
+
+    }
+
+    static boolean isSafe(char[][] grid, int r, int c, boolean[][] visited) {
+        int n = grid.length;
+        int m = grid[0].length;
+        return (r>=0 && r<n && c>=0 && c<m && grid[r][c]=='L'&& !visited[r][c]);
+    }
+
+    public void dfs(char[][]grid,int r, int c,boolean [][]visited){
+        visited[r][c] =true;
+        int[]dr = {-1,-1,-1,0,0,1,1,1};
+        int[]dc = {-1,0,1,-1,1,-1,0,1};
+
+        for(int k=0;k<8;k++){
+            int nr = r+dr[k];
+            int nc = c+dc[k];
+
+            if(isSafe(grid,nr,nc,visited))
+                dfs(grid,nr,nc,visited);
+        }
+    }
+
+    public static void floydwarshall() {
+
+        int INF = Integer.MAX_VALUE;
+        int[][] dist = {{0, 4, INF, 5, INF},
+                {INF, 0, 1, INF, 6},
+                {2, INF, 0, 3, INF },
+                {INF, INF, 1, 0, 2},
+                {1, INF, INF, 4, 0}};
+        int V = dist.length;
+        for (int k = 0; k < V; k++)
+            for (int i = 0; i < V; i++)
+                for(int j = 0;j<V;j++) {
+                    if (dist[i][k] != Integer.MAX_VALUE && dist[k][j] != Integer.MAX_VALUE
+                            && dist[i][k] + dist[k][j] < dist[i][j]) {
+                       dist[i][j] = Math.min(dist[i][k] + dist[k][j],dist[i][j]);
+                    }
+                }
+    }
+
+    public static void main(String[] args) {
+        floydwarshall();
+    }
+
+
 }

@@ -413,4 +413,35 @@ public class LinkedList {
           carry.data = 0;
       return carry;
   }
+
+  public static Node reverseKGroup(Node head, int k)
+  {
+      if(head ==null)
+          return head;
+
+      Node curr = head,newHead=null,tail=null;
+
+      while(curr!=null){
+          Node groupHead = curr;
+          Node prev = null,next=null;
+          int count = 0;
+
+          while(curr!=null && count<k){
+              next = curr.next;
+              curr.next = prev;
+              prev = curr;
+              curr = next;
+              count++;
+          }
+
+          if(newHead==null)
+              newHead = prev;
+
+          if(tail!=null)
+              tail.next = prev;
+
+          tail=groupHead;
+      }
+      return newHead;
+  }
 }
