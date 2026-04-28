@@ -7,9 +7,9 @@ import java.util.Queue;
 
 public class Tree {
 
-   private int data;
-   private Tree left;
-   private Tree right;
+   public int data;
+   public Tree left;
+   public Tree right;
 
    Tree(int val){
         this.data = val;
@@ -50,74 +50,6 @@ public class Tree {
         }
         return al;
    }
-
-   public int getHeightOfTree(Tree root){
-        if(root==null)
-            return 0;
-        int left = getHeightOfTree(root.left);
-        int right = getHeightOfTree(root.right);
-        if(left>right)
-            return left+1;
-        return right +1;
-   }
-
-   public boolean isSame(Tree p,Tree q){
-        if(p==null && q==null)
-            return true;
-        if(p==null && q!=null || p!=null && q==null)
-            return false;
-        if(p.data == q.data && isSame(p.left,q.left) && isSame(p.right,q.right))
-            return true;
-        return false;
-   }
-
-    public Tree invertTree(Tree root) {
-        if(root == null)
-            return null;
-
-        Queue<Tree> q = new LinkedList<>();
-        q.add(root);
-        while(!q.isEmpty()) {
-            Tree node = q.poll(),left,right;
-            left = node.left;
-            right = node.right;
-
-            node.left = right;
-            node.right = left;
-
-            if(node.left != null)
-                q.add(node.left);
-            if(node.right != null)
-                q.add(node.right);
-        }
-        return root;
-    }
-    public int maxDepth(Tree root) {
-        if (root == null)
-            return 0;
-
-        return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
-    }
-
-    public boolean isSubtree(Tree root, Tree subRoot) {
-        if(subRoot == null)
-            return true;
-        if(root == null)
-            return false;
-        if(isSame(root,subRoot))
-            return true;
-        return isSubtree(root.left,subRoot) || isSubtree(root.right,subRoot);
-    }
-
-    public Tree lowestCommonAncestor(Tree root, Tree p, Tree q) {
-        if(root == null || p == null || q == null)
-            return null;
-        if(Math.max(p.data,q.data)<root.data)
-            return lowestCommonAncestor(root.left,p,q);
-        if(Math.min(p.data,q.data)>root.data)
-            return lowestCommonAncestor(root.right,p,q);
-        return root;
-    }
     public List<List<Integer>> levelOrder(Tree root) {
         List<List<Integer>> res = new ArrayList<>();
 
